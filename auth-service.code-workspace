@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../auth-service"
+		},
+		{
+			"name": "Doctor Appointment Booking",
+			"path": ".."
+		},
+		{
+			"name": "api-gateway-1",
+			"path": "api-gateway-1"
+		}
+	],
+	"settings": {}
+}

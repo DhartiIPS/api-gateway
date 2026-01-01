@@ -25,58 +25,34 @@ export class AuthServiceClient {
     );
   }
 
-  /**
-   * Send message to Auth Microservice
-   */
   send(pattern: string | Record<string, any>, data: any) {
     return this.client.send(pattern, data);
   }
 
-  /**
-   * Emit event to Auth Microservice
-   */
   emit(pattern: string | Record<string, any>, data: any) {
     return this.client.emit(pattern, data);
   }
 
-  /**
-   * Validate JWT token with Auth Service
-   */
   validateToken(token: string) {
     return this.send({ cmd: 'validate_token' }, { token });
   }
 
-  /**
-   * Register new user via Auth Service
-   */
   register(registerDto: any) {
     return this.send({ cmd: 'register' }, registerDto);
   }
 
-  /**
-   * Login user via Auth Service
-   */
   login(loginDto: any) {
     return this.send({ cmd: 'login' }, loginDto);
   }
 
-  /**
-   * Refresh JWT token
-   */
   refreshToken(refreshToken: string) {
     return this.send({ cmd: 'refresh_token' }, { refreshToken });
   }
 
-  /**
-   * Get user profile
-   */
   getUserProfile(userId: string) {
     return this.send({ cmd: 'get_profile' }, { userId });
   }
 
-  /**
-   * Update user profile
-   */
   updateUserProfile(userId: string, profileData: any) {
     return this.send({ cmd: 'update_profile' }, { userId, ...profileData });
   }

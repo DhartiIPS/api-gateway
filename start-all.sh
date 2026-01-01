@@ -19,7 +19,7 @@ if ! pg_isready -h localhost -p 5432 > /dev/null 2>&1; then
     echo "Please start PostgreSQL and try again"
     exit 1
 fi
-echo "${GREEN}✅ PostgreSQL is running${NC}"
+echo "${GREEN}✅ PostgreSQL is running${NC}"   
 echo ""
 
 # Start Auth Service
