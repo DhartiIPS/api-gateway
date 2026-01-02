@@ -25,9 +25,6 @@ import { JwtGuard } from '../../common/guards/jwt.guard';
 export class AppointmentsController {
   constructor(private appointmentsService: AppointmentsService) {}
 
-  /**
-   * Get all appointments for the authenticated user
-   */
   @Get()
   @UseGuards(JwtGuard)
   async getAppointments(@Request() req: any, @Query() filters?: any) {
@@ -38,9 +35,6 @@ export class AppointmentsController {
     return this.appointmentsService.getAppointments(userId, filters);
   }
 
-  /**
-   * Get a specific appointment by ID
-   */
   @Get(':id')
   @UseGuards(JwtGuard)
   async getAppointment(@Param('id') appointmentId: string) {
@@ -50,9 +44,6 @@ export class AppointmentsController {
     return this.appointmentsService.getAppointment(appointmentId);
   }
 
-  /**
-   * Create a new appointment
-   */
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtGuard)
@@ -69,9 +60,6 @@ export class AppointmentsController {
     return this.appointmentsService.createAppointment(userId, createDto);
   }
 
-  /**
-   * Update an appointment
-   */
   @Put(':id')
   @UseGuards(JwtGuard)
   async updateAppointment(
@@ -83,10 +71,6 @@ export class AppointmentsController {
     }
     return this.appointmentsService.updateAppointment(appointmentId, updateDto);
   }
-
-  /**
-   * Cancel an appointment
-   */
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtGuard)
@@ -97,9 +81,6 @@ export class AppointmentsController {
     return this.appointmentsService.cancelAppointment(appointmentId, reason);
   }
 
-  /**
-   * Get doctor availability
-   */
   @Get('doctor/:doctorId/availability')
   async getDoctorAvailability(
     @Param('doctorId') doctorId: string,
@@ -111,9 +92,6 @@ export class AppointmentsController {
     return this.appointmentsService.getDoctorAvailability(doctorId, date);
   }
 
-  /**
-   * Get doctor profile
-   */
   @Get('doctor/:doctorId')
   async getDoctorProfile(@Param('doctorId') doctorId: string) {
     if (!doctorId) {
@@ -122,17 +100,12 @@ export class AppointmentsController {
     return this.appointmentsService.getDoctorProfile(doctorId);
   }
 
-  /**
-   * Search doctors
-   */
   @Get('search/doctors')
   async searchDoctors(@Query() searchQuery: SearchDoctorsDto) {
     return this.appointmentsService.searchDoctors(searchQuery);
   }
 
-  /**
-   * Get all hospitals
-   */
+
   @Get('hospitals/list')
   async getHospitals() {
     return this.appointmentsService.getHospitals();

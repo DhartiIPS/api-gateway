@@ -2,6 +2,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
+import { HospitalModule } from './modules/hospitals/hospitals.module';
+import { DoctorSpecialiesModule } from './modules/doctor-specialty/doctor-specialies.module';
 // Import other modules as needed
 // import { AppointmentsModule } from './appointments/appointments.module';
 // import { NotificationsModule } from './notifications/notifications.module';
@@ -15,6 +17,8 @@ import { AuthModule } from './modules/auth/auth.module';
       envFilePath: '.env',
     }),
     AuthModule,
+    HospitalModule,
+    DoctorSpecialiesModule
     // Add other gateway modules here
     // AppointmentsModule,
     // NotificationsModule,
