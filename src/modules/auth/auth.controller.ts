@@ -1,9 +1,9 @@
-// api-gateway/src/auth/auth.controller.ts
-import { Controller, Post, Body, Get, Param, Patch, UseInterceptors, UploadedFile, Logger, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, UseInterceptors, UploadedFile, Logger, BadRequestException, ValidationPipe, UsePipes, ConflictException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { Inject } from '@nestjs/common';
 import { firstValueFrom, timeout } from 'rxjs';
+import { RegisterDto } from '@/common/dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,35 +14,47 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  async register(@Body() dto: any) {
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
+  async register(@Body() dto: RegisterDto) {
+    this.logger.log(`🌐 Register request: ${dto.email}`);
+
     try {
-      this.logger.log(`Register request: ${dto.email}`);
-      
-      // Properly format the payload for TCP microservice
-      const payload = {
-        email: dto.email,
-        password: dto.password,
-        full_name: dto.full_name,
-        role: dto.role,
-        phone: dto.phone,
-        date_of_birth: dto.date_of_birth,
-        blood_group: dto.blood_group,
-        age: dto.age,
-        gender: dto.gender,
-        address: dto.address,
-        education: dto.education,
-        experience: dto.experience,
-      };
-      
-      const result = await firstValueFrom(
-        this.authClient.send({ cmd: 'register' }, payload).pipe(timeout(10000))
+      const response = await firstValueFrom(
+        this.authClient
+          .send({ cmd: 'register' }, dto)
+          .pipe(timeout(10000)),
       );
-      return result;
-    } catch (error) {
-      // this.logger.error(`Register failed: ${error.message}`);
-      throw new BadRequestException('Registration failed - ');
+
+      return response;
+    } catch (err) {
+      const error = err as any;
+
+      this.logger.error('❌ Registration failed', error);
+
+      const statusCode =
+        error?.error?.statusCode ||
+        error?.status ||
+        500;
+
+      const message =
+        error?.error?.message ||
+        error?.message ||
+        'Registration failed';
+
+      if (statusCode === 409) {
+        throw new ConflictException(message);
+      }
+
+      throw new BadRequestException(message);
     }
   }
+
 
   @Post('login')
   async login(@Body() dto: any) {
@@ -58,16 +70,10 @@ export class AuthController {
         this.authClient.send(message, payload).pipe(timeout(10000))
       );
       
-      this.logger.log(`✅ Login successful for: ${dto.email}`);
+      this.logger.log(`Login successful for: ${dto.email}`);
       return result;
     } catch (error) {
-      // this.logger.error(`❌ Login error: ${error.message}`, error.stack);
-      console.error('TCP Error:', error);
-      
-      // if (error.message && error.message.includes('ECONNREFUSED')) {
-      //   throw new BadRequestException('Auth service is not available. Please try again later.');
-      // }
-      
+      console.error('TCP Error:', error);      
       throw new BadRequestException('Login failed - Invalid credentials or service error');
     }
   }

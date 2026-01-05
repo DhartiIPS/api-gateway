@@ -1,4 +1,6 @@
-import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
+import { IsEmail, IsString, MinLength, IsOptional, IsEnum, IsNumber } from 'class-validator';
+import { Role } from '../enums/role.enum';
+import { Type } from 'class-transformer';
 
 export class RegisterDto {
   @IsEmail()
@@ -10,11 +12,11 @@ export class RegisterDto {
 
   @IsOptional()
   @IsString()
-  firstName?: string;
+  full_name?: string;
 
   @IsOptional()
-  @IsString()
-  lastName?: string;
+  @IsEnum(Role)
+  role?: Role;
 
   @IsOptional()
   @IsString()
@@ -22,7 +24,45 @@ export class RegisterDto {
 
   @IsOptional()
   @IsString()
+  blood_group?: string;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  age?: number;
+
+  @IsOptional()
+  @IsString()
+  gender?: string;
+
+  @IsOptional()
+  @IsString()
   address?: string;
+
+  @IsOptional()
+  @IsString()
+  date_of_birth?: string;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  hospital_id?: number;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  specialty_id?: number;
+
+  @IsOptional()
+  @IsString()
+  education?: string;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  experience?: number;
+
+  
 }
 
 export class LoginDto {

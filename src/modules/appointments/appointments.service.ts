@@ -129,6 +129,20 @@ export class AppointmentsService {
     }
   }
 
+  async getDoctorAppointmentCounts(doctorId: number) {
+  try {
+    this.logger.log(`Fetching appointment counts for doctor: ${doctorId}`);
+    const result = await firstValueFrom(
+      this.appointmentServiceClient.getDoctorAppointmentCounts(doctorId).pipe(timeout(5000)),
+    );
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    this.logger.error(`Failed to fetch doctor appointment counts: ${errorMessage}`);
+    throw new BadRequestException('Failed to fetch doctor appointment counts.');
+  }
+}
+
   async getHospitals() {
     try {
       this.logger.log('Fetching hospitals list');

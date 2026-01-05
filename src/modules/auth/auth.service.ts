@@ -19,7 +19,13 @@ export class AuthService {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       this.logger.error(`Registration failed: ${errorMessage}`);
-      throw new BadRequestException('Registration failed. Please try again.');
+      
+      // Check if it's a duplicate email error
+      if (errorMessage.includes('already exists') || errorMessage.includes('duplicate')) {
+        throw new BadRequestException('This email is already registered. Please use a different email or login.');
+      }
+      
+      throw new BadRequestException(errorMessage || 'Registration failed. Please try again.');
     }
   }
 

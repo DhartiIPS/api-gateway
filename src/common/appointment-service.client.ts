@@ -1,71 +1,51 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, Inject } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AppointmentServiceClient {
-  private client: ClientProxy;
-  private readonly logger = new Logger(AppointmentServiceClient.name);
+  constructor(
+    @Inject('APPOINTMENT_SERVICE') private readonly client: ClientProxy,
+  ) {}
 
-  constructor(private configService: ConfigService) {
-    this.initializeClient();
+  getAppointments(data: any): Observable<any> {
+    return this.client.send('allappointment', data);
   }
 
-  private initializeClient() {
-    this.client = ClientProxyFactory.create({
-      transport: Transport.TCP,
-      options: {
-        host: this.configService.get('APPOINTMENT_SERVICE_HOST', '127.0.0.1'),
-        port: this.configService.get('APPOINTMENT_SERVICE_PORT', 5003),
-      },
-    });
-
-    this.logger.log(
-      `Appointment Service Client initialized on ${this.configService.get('APPOINTMENT_SERVICE_HOST')}:${this.configService.get('APPOINTMENT_SERVICE_PORT')}`,
-    );
+  getAppointment(appointmentId: string): Observable<any> {
+    return this.client.send('get-appointment', { appointmentId });
   }
 
-  send(pattern: string | Record<string, any>, data: any) {
-    return this.client.send(pattern, data);
+  createAppointment(data: any): Observable<any> {
+    return this.client.send('book', data);
   }
 
-  emit(pattern: string | Record<string, any>, data: any) {
-    return this.client.emit(pattern, data);
+  updateAppointment(appointmentId: string, data: any): Observable<any> {
+    return this.client.send('update/:appointmentId', { appointmentId, ...data });
   }
 
-  getAppointments(filters?: any) {
-    return this.send('appointment.list', filters || {});
+  cancelAppointment(appointmentId: string, reason?: string): Observable<any> {
+    return this.client.send('cancel/:appointmentId', { appointmentId, reason });
   }
 
-  getAppointment(appointmentId: string) {
-    return this.send('appointment.get', { id: appointmentId });
+  getDoctorAvailability(doctorId: string, date?: string): Observable<any> {
+    return this.client.send('doctor-availability/:doctorId', { doctorId: Number(doctorId), date });
   }
 
-  createAppointment(appointmentData: any) {
-    return this.send('appointment.create', appointmentData);
+  getDoctorProfile(doctorId: string): Observable<any> {
+    return this.client.send('doctor-profile', { doctorId: Number(doctorId) });
   }
 
-  updateAppointment(appointmentId: string, updateData: any) {
-    return this.send('appointment.update', { id: appointmentId, ...updateData });
+  searchDoctors(searchQuery: any): Observable<any> {
+    return this.client.send('search-doctors', searchQuery);
   }
 
-  cancelAppointment(appointmentId: string, reason?: string) {
-    return this.send('appointment.cancel', { id: appointmentId, reason });
+  // FIX: Use the correct message pattern
+  getDoctorAppointmentCounts(doctorId: number): Observable<any> {
+    return this.client.send('doctor_appointment_counts', { doctorId });
   }
 
-  getDoctorAvailability(doctorId: string, date?: string) {
-    return this.send('doctor.availability', { doctorId, date });
-  }
-
-  getDoctorProfile(doctorId: string) {
-    return this.send('doctor.profile', { id: doctorId });
-  }
-
-  searchDoctors(query: any) {
-    return this.send('doctor.search', query);
-  }
-
-  getHospitals() {
-    return this.send('hospital.list', {});
+  getHospitals(): Observable<any> {
+    return this.client.send('get-hospitals', {});
   }
 }

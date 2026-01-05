@@ -21,11 +21,11 @@ import {
 } from '../../common/dto/appointment.dto';
 import { JwtGuard } from '../../common/guards/jwt.guard';
 
-@Controller('api/appointments')
+@Controller('appointments')
 export class AppointmentsController {
-  constructor(private appointmentsService: AppointmentsService) {}
+  constructor(private appointmentsService: AppointmentsService) { }
 
-  @Get()
+  @Get('allappointment')
   @UseGuards(JwtGuard)
   async getAppointments(@Request() req: any, @Query() filters?: any) {
     const userId = req.user?.id;
@@ -35,16 +35,7 @@ export class AppointmentsController {
     return this.appointmentsService.getAppointments(userId, filters);
   }
 
-  @Get(':id')
-  @UseGuards(JwtGuard)
-  async getAppointment(@Param('id') appointmentId: string) {
-    if (!appointmentId) {
-      throw new BadRequestException('Appointment ID is required');
-    }
-    return this.appointmentsService.getAppointment(appointmentId);
-  }
-
-  @Post()
+  @Post('book')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtGuard)
   async createAppointment(@Request() req: any, @Body() createDto: CreateAppointmentDto) {
@@ -60,25 +51,23 @@ export class AppointmentsController {
     return this.appointmentsService.createAppointment(userId, createDto);
   }
 
-  @Put(':id')
-  @UseGuards(JwtGuard)
-  async updateAppointment(
-    @Param('id') appointmentId: string,
-    @Body() updateDto: UpdateAppointmentDto,
-  ) {
-    if (!appointmentId) {
-      throw new BadRequestException('Appointment ID is required');
-    }
-    return this.appointmentsService.updateAppointment(appointmentId, updateDto);
+  @Get('search/doctors')
+  async searchDoctors(@Query() searchQuery: SearchDoctorsDto) {
+    return this.appointmentsService.searchDoctors(searchQuery);
   }
-  @Delete(':id')
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtGuard)
-  async cancelAppointment(@Param('id') appointmentId: string, @Body('reason') reason?: string) {
-    if (!appointmentId) {
-      throw new BadRequestException('Appointment ID is required');
+
+  @Get('doctor-counts/:doctorId')
+  @UseGuards(JwtGuard) // optional, depending if you want this protected
+  async getDoctorAppointmentCounts(@Param('doctorId') doctorId: string) {
+    if (!doctorId) {
+      throw new BadRequestException('Doctor ID is required');
     }
-    return this.appointmentsService.cancelAppointment(appointmentId, reason);
+    return this.appointmentsService.getDoctorAppointmentCounts(Number(doctorId));
+  }
+
+  @Get('hospitals/list')
+  async getHospitals() {
+    return this.appointmentsService.getHospitals();
   }
 
   @Get('doctor/:doctorId/availability')
@@ -100,14 +89,34 @@ export class AppointmentsController {
     return this.appointmentsService.getDoctorProfile(doctorId);
   }
 
-  @Get('search/doctors')
-  async searchDoctors(@Query() searchQuery: SearchDoctorsDto) {
-    return this.appointmentsService.searchDoctors(searchQuery);
+  @Get(':id')
+  @UseGuards(JwtGuard)
+  async getAppointment(@Param('id') appointmentId: string) {
+    if (!appointmentId) {
+      throw new BadRequestException('Appointment ID is required');
+    }
+    return this.appointmentsService.getAppointment(appointmentId);
   }
 
+  @Put(':id')
+  @UseGuards(JwtGuard)
+  async updateAppointment(
+    @Param('id') appointmentId: string,
+    @Body() updateDto: UpdateAppointmentDto,
+  ) {
+    if (!appointmentId) {
+      throw new BadRequestException('Appointment ID is required');
+    }
+    return this.appointmentsService.updateAppointment(appointmentId, updateDto);
+  }
 
-  @Get('hospitals/list')
-  async getHospitals() {
-    return this.appointmentsService.getHospitals();
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard)
+  async cancelAppointment(@Param('id') appointmentId: string, @Body('reason') reason?: string) {
+    if (!appointmentId) {
+      throw new BadRequestException('Appointment ID is required');
+    }
+    return this.appointmentsService.cancelAppointment(appointmentId, reason);
   }
 }
