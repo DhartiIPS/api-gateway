@@ -1,4 +1,4 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, ConflictException } from '@nestjs/common';
 import { AppointmentServiceClient } from '../../common/appointment-service.client';
 import {
   CreateAppointmentDto,
@@ -11,7 +11,7 @@ import { firstValueFrom, timeout } from 'rxjs';
 export class AppointmentsService {
   private readonly logger = new Logger(AppointmentsService.name);
 
-  constructor(private appointmentServiceClient: AppointmentServiceClient) {}
+  constructor(private appointmentServiceClient: AppointmentServiceClient) { }
 
   async getAppointments(userId: string, filters?: any) {
     try {
@@ -46,16 +46,23 @@ export class AppointmentsService {
       this.logger.log(`Creating appointment for user: ${userId}`);
       const appointmentData = {
         ...createDto,
-        userId,
+        patient_id: createDto.patient_id || Number(userId),
       };
       const result = await firstValueFrom(
         this.appointmentServiceClient.createAppointment(appointmentData).pipe(timeout(5000)),
       );
       return result;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.logger.error(`Failed to create appointment: ${errorMessage}`);
-      throw new BadRequestException('Failed to create appointment.');
+      const statusCode = (error as any)?.error?.statusCode || (error as any)?.status || 400;
+      const message =
+        (error as any)?.error?.message ||
+        (error as any)?.message ||
+        'Failed to create appointment.';
+      this.logger.error(`Failed to create appointment: ${message}`);
+      if (statusCode === 409) {
+        throw new ConflictException(message);
+      }
+      throw new BadRequestException(message);
     }
   }
 
@@ -87,19 +94,19 @@ export class AppointmentsService {
     }
   }
 
-  async getDoctorAvailability(doctorId: string, date?: string) {
-    try {
-      this.logger.log(`Fetching availability for doctor: ${doctorId}`);
-      const result = await firstValueFrom(
-        this.appointmentServiceClient.getDoctorAvailability(doctorId, date).pipe(timeout(5000)),
-      );
-      return result;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.logger.error(`Failed to fetch doctor availability: ${errorMessage}`);
-      throw new BadRequestException('Failed to fetch doctor availability.');
-    }
-  }
+  // async getDoctorAvailability(doctorId: string, date?: string) {
+  //   try {
+  //     this.logger.log(`Fetching availability for doctor: ${doctorId}`);
+  //     const result = await firstValueFrom(
+  //       this.appointmentServiceClient.getDoctorAvailability(doctorId, date).pipe(timeout(5000)),
+  //     );
+  //     return result;
+  //   } catch (error) {
+  //     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+  //     this.logger.error(`Failed to fetch doctor availability: ${errorMessage}`);
+  //     throw new BadRequestException('Failed to fetch doctor availability.');
+  //   }
+  // }
 
   async getDoctorProfile(doctorId: string) {
     try {
@@ -130,18 +137,32 @@ export class AppointmentsService {
   }
 
   async getDoctorAppointmentCounts(doctorId: number) {
-  try {
-    this.logger.log(`Fetching appointment counts for doctor: ${doctorId}`);
-    const result = await firstValueFrom(
-      this.appointmentServiceClient.getDoctorAppointmentCounts(doctorId).pipe(timeout(5000)),
-    );
-    return result;
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    this.logger.error(`Failed to fetch doctor appointment counts: ${errorMessage}`);
-    throw new BadRequestException('Failed to fetch doctor appointment counts.');
+    try {
+      this.logger.log(`Fetching appointment counts for doctor: ${doctorId}`);
+      const result = await firstValueFrom(
+        this.appointmentServiceClient.getDoctorAppointmentCounts(doctorId).pipe(timeout(5000)),
+      );
+      return result;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Failed to fetch doctor appointment counts: ${errorMessage}`);
+      throw new BadRequestException('Failed to fetch doctor appointment counts.');
+    }
   }
-}
+
+  async getPatientAppointmentCounts(patientId: number){
+    try {
+      this.logger.log(`Fetching appointment counts for doctor: ${patientId}`);
+      const result = await firstValueFrom(
+        this.appointmentServiceClient.getPatientAppointmentCounts(patientId).pipe(timeout(5000)),
+      );
+      return result;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Failed to fetch doctor appointment counts: ${errorMessage}`);
+      throw new BadRequestException('Failed to fetch doctor appointment counts.');
+    }
+  }
 
   async getHospitals() {
     try {

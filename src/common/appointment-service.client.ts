@@ -28,10 +28,6 @@ export class AppointmentServiceClient {
     return this.client.send('cancel/:appointmentId', { appointmentId, reason });
   }
 
-  getDoctorAvailability(doctorId: string, date?: string): Observable<any> {
-    return this.client.send('doctor-availability/:doctorId', { doctorId: Number(doctorId), date });
-  }
-
   getDoctorProfile(doctorId: string): Observable<any> {
     return this.client.send('doctor-profile', { doctorId: Number(doctorId) });
   }
@@ -43,6 +39,10 @@ export class AppointmentServiceClient {
   // FIX: Use the correct message pattern
   getDoctorAppointmentCounts(doctorId: number): Observable<any> {
     return this.client.send('doctor_appointment_counts', { doctorId });
+  }
+
+  getPatientAppointmentCounts(patientId: number) {
+    return this.client.send('patient_appointment_counts', { patientId });
   }
 
   getHospitals(): Observable<any> {

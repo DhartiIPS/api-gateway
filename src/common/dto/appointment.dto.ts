@@ -1,19 +1,23 @@
-import { IsUUID, IsString, IsDateString, IsOptional, IsEnum } from 'class-validator';
+import { IsUUID, IsString, IsDateString, IsOptional, IsEnum, IsNumber } from 'class-validator';
 
 export class CreateAppointmentDto {
-  @IsUUID()
-  doctorId: string;
+  @IsOptional()
+  @IsNumber()
+  patient_id?: number;
+
+  @IsNumber()
+  doctor_id: number;
 
   @IsDateString()
-  appointmentDate: string;
+  appointment_date: string;
 
   @IsOptional()
   @IsString()
-  startTime?: string;
+  start_time?: string;
 
   @IsOptional()
   @IsString()
-  endTime?: string;
+  end_time?: string;
 
   @IsOptional()
   @IsString()
@@ -27,15 +31,15 @@ export class CreateAppointmentDto {
 export class UpdateAppointmentDto {
   @IsOptional()
   @IsDateString()
-  appointmentDate?: string;
+  appointment_date?: string;
 
   @IsOptional()
   @IsString()
-  startTime?: string;
+  start_time?: string;
 
   @IsOptional()
   @IsString()
-  endTime?: string;
+  end_time?: string;
 
   @IsOptional()
   @IsString()

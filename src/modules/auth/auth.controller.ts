@@ -106,6 +106,13 @@ export class AuthController {
     );
   }
 
+  @Get('available-doctors')
+  async getAvailableDoctors() {
+    return firstValueFrom(
+      this.authClient.send({ cmd: 'get_doctors' }, {})
+    );
+  }
+
   @Get('profile/:userId')
   async getProfile(@Param('userId') userId: string) {
     return firstValueFrom(

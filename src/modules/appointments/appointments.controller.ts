@@ -28,7 +28,7 @@ export class AppointmentsController {
   @Get('allappointment')
   @UseGuards(JwtGuard)
   async getAppointments(@Request() req: any, @Query() filters?: any) {
-    const userId = req.user?.id;
+    const userId = req.user?.id ?? req.user?.userId ?? req.user?.sub;
     if (!userId) {
       throw new BadRequestException('User ID not found in token');
     }
@@ -39,12 +39,12 @@ export class AppointmentsController {
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtGuard)
   async createAppointment(@Request() req: any, @Body() createDto: CreateAppointmentDto) {
-    const userId = req.user?.id;
+    const userId = req.user?.id ?? req.user?.userId ?? req.user?.sub;
     if (!userId) {
       throw new BadRequestException('User ID not found in token');
     }
 
-    if (!createDto.doctorId || !createDto.appointmentDate) {
+    if (!createDto.doctor_id || !createDto.appointment_date) {
       throw new BadRequestException('Doctor ID and appointment date are required');
     }
 
@@ -65,20 +65,18 @@ export class AppointmentsController {
     return this.appointmentsService.getDoctorAppointmentCounts(Number(doctorId));
   }
 
+  @Get('counts/:patientId')
+  @UseGuards(JwtGuard)
+  async getPatientAppointmentCounts(@Param('patientId') patientId: string) {
+    if (!patientId) {
+      throw new BadRequestException('Patient ID is required');
+    }
+    return this.appointmentsService.getPatientAppointmentCounts(Number(patientId));
+  }
+
   @Get('hospitals/list')
   async getHospitals() {
     return this.appointmentsService.getHospitals();
-  }
-
-  @Get('doctor/:doctorId/availability')
-  async getDoctorAvailability(
-    @Param('doctorId') doctorId: string,
-    @Query('date') date?: string,
-  ) {
-    if (!doctorId) {
-      throw new BadRequestException('Doctor ID is required');
-    }
-    return this.appointmentsService.getDoctorAvailability(doctorId, date);
   }
 
   @Get('doctor/:doctorId')

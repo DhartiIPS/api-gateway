@@ -18,7 +18,7 @@ async function createDatabases() {
     console.log('✅ Connected to PostgreSQL');
 
     // Create user_doctor database
-    const userDbName = process.env.USER_DB_NAME || 'user_doctor';
+    const userDbName = process.env.USER_DB_NAME || 'microservice_db';
     const userDbExists = await adminClient.query(
       `SELECT 1 FROM pg_database WHERE datname = $1`,
       [userDbName],
@@ -32,7 +32,7 @@ async function createDatabases() {
     }
 
     // Create appointment_doctor database
-    const appointmentDbName = process.env.APPOINTMENT_DB_NAME || 'appointment_doctor';
+    const appointmentDbName = process.env.APPOINTMENT_DB_NAME || 'microservice_db';
     const appointmentDbExists = await adminClient.query(
       `SELECT 1 FROM pg_database WHERE datname = $1`,
       [appointmentDbName],

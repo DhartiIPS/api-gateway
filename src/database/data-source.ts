@@ -1,4 +1,3 @@
-// gateway/ormconfig.ts
 import { DataSource } from 'typeorm';
 import { ConfigModule } from '@nestjs/config';
 
@@ -10,7 +9,7 @@ export default new DataSource({
   port: parseInt(process.env.USER_DB_PORT || '5432'),
   username: process.env.USER_DB_USERNAME || 'postgres',
   password: process.env.USER_DB_PASSWORD || 'ips12345',
-  database: process.env.USER_DB_NAME || 'user_doctor',
+  database: process.env.USER_DB_NAME || 'microservice_db',
   entities: ['src/**/*.entity{.ts,.js}'],
   migrations: ['src/database/migrations/*{.ts,.js}'],
   synchronize: false,
