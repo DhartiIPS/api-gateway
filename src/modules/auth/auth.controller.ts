@@ -113,6 +113,13 @@ export class AuthController {
     );
   }
 
+  @Get('doctor/:doctorId')
+  async getDoctorById(@Param('doctorId') doctorId: number) {
+    return firstValueFrom(
+      this.authClient.send({ cmd: 'get_doctor_by_id' }, { doctorId })
+    );
+  }
+
   @Get('profile/:userId')
   async getProfile(@Param('userId') userId: string) {
     return firstValueFrom(

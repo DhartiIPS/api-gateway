@@ -12,6 +12,7 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  Patch,
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import {
@@ -96,15 +97,12 @@ export class AppointmentsController {
     return this.appointmentsService.getAppointment(appointmentId);
   }
 
-  @Put(':id')
+  @Patch('update/:id') // Changed from @Put to @Patch
   @UseGuards(JwtGuard)
   async updateAppointment(
     @Param('id') appointmentId: string,
     @Body() updateDto: UpdateAppointmentDto,
   ) {
-    if (!appointmentId) {
-      throw new BadRequestException('Appointment ID is required');
-    }
     return this.appointmentsService.updateAppointment(appointmentId, updateDto);
   }
 
@@ -116,5 +114,14 @@ export class AppointmentsController {
       throw new BadRequestException('Appointment ID is required');
     }
     return this.appointmentsService.cancelAppointment(appointmentId, reason);
+  }
+
+  @Get('upcoming/:doctorId')
+  @UseGuards(JwtGuard)
+  async getUpcomingAppointments(@Param('doctorId') doctorId: string) {
+    if (!doctorId) {
+      throw new BadRequestException('Doctor ID is required');
+    }
+    return this.appointmentsService.getUpcomingAppointments(Number(doctorId));
   }
 }

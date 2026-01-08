@@ -56,4 +56,8 @@ export class AuthServiceClient {
   updateUserProfile(userId: string, profileData: any) {
     return this.send({ cmd: 'update_profile' }, { userId, ...profileData });
   }
+
+  getDoctorsById(doctorIds: number[]) {
+    return this.send({ cmd: 'get_doctors_by_ids' }, { doctorIds });
+  }
 }

@@ -177,4 +177,18 @@ export class AppointmentsService {
       throw new BadRequestException('Failed to fetch hospitals.');
     }
   }
+
+  async getUpcomingAppointments(doctorId: number) {
+    try {
+      this.logger.log(`Fetching upcoming appointments for doctor: ${doctorId}`);
+      const result = await firstValueFrom(
+        this.appointmentServiceClient.getUpcomingAppointments(doctorId).pipe(timeout(5000)),
+      );
+      return result;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Failed to fetch upcoming appointments: ${errorMessage}`);
+      throw new BadRequestException('Failed to fetch upcoming appointments.');
+    }
+  }
 }

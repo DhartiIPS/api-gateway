@@ -4,6 +4,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { HospitalModule } from './modules/hospitals/hospitals.module';
 import { DoctorSpecialiesModule } from './modules/doctor-specialty/doctor-specialies.module';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
+import { NotificationModule } from './modules/notifications/notification.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { AppointmentsModule } from './modules/appointments/appointments.module';
     AuthModule,
     HospitalModule,
     DoctorSpecialiesModule,
-    AppointmentsModule
+    AppointmentsModule,
+    NotificationModule
   ],
   controllers: [],
   providers: [],

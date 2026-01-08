@@ -35,8 +35,7 @@ export class AppointmentServiceClient {
   searchDoctors(searchQuery: any): Observable<any> {
     return this.client.send('search-doctors', searchQuery);
   }
-
-  // FIX: Use the correct message pattern
+  
   getDoctorAppointmentCounts(doctorId: number): Observable<any> {
     return this.client.send('doctor_appointment_counts', { doctorId });
   }
@@ -47,5 +46,9 @@ export class AppointmentServiceClient {
 
   getHospitals(): Observable<any> {
     return this.client.send('get-hospitals', {});
+  }
+
+  getUpcomingAppointments(doctorId: number): Observable<any> {
+    return this.client.send('get_upcoming_appointments', { doctor: doctorId });
   }
 }

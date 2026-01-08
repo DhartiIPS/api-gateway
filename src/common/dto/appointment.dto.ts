@@ -1,5 +1,13 @@
 import { IsUUID, IsString, IsDateString, IsOptional, IsEnum, IsNumber } from 'class-validator';
 
+
+export enum AppointmentStatus {
+  scheduled = 'scheduled',
+  completed = 'completed',
+  cancelled = 'cancelled',
+  confirmed = 'confirmed',
+  rescheduled = 'rescheduled',
+}
 export class CreateAppointmentDto {
   @IsOptional()
   @IsNumber()
@@ -50,8 +58,8 @@ export class UpdateAppointmentDto {
   notes?: string;
 
   @IsOptional()
-  @IsEnum(['pending', 'confirmed', 'cancelled', 'completed'])
-  status?: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  @IsEnum(AppointmentStatus)
+  status: AppointmentStatus;
 }
 
 export class SearchDoctorsDto {
