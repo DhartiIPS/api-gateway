@@ -51,4 +51,8 @@ export class AppointmentServiceClient {
   getUpcomingAppointments(doctorId: number): Observable<any> {
     return this.client.send('get_upcoming_appointments', { doctor: doctorId });
   }
+
+  getDoctorAvailability(doctorId: string, date: string): Observable<any> {
+    return this.client.send('doctor_availability', { doctorId, date });
+  }
 }

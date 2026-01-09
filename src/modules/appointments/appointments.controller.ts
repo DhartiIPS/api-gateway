@@ -88,6 +88,20 @@ export class AppointmentsController {
     return this.appointmentsService.getDoctorProfile(doctorId);
   }
 
+  @Get('doctor-availability/:doctorId')
+  async getDoctorAvailability(
+    @Param('doctorId') doctorId: string,
+    @Query('date') date: string,
+  ) {
+    if (!doctorId) {
+      throw new BadRequestException('Doctor ID is required');
+    }
+    if (!date) {
+      throw new BadRequestException('Date is required');
+    }
+    return this.appointmentsService.getDoctorAvailability(doctorId, date);
+  }
+
   @Get(':id')
   @UseGuards(JwtGuard)
   async getAppointment(@Param('id') appointmentId: string) {

@@ -59,8 +59,8 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: any) {
     try {
-      this.logger.log(`🌐 Gateway received login request: ${dto.email}`);
-      console.log('🌐 Gateway received login request:', dto);
+      this.logger.log(`Gateway received login request: ${dto.email}`);
+      console.log('Gateway received login request:', dto);
       
       // Ensure proper message format for TCP microservice
       const message = { cmd: 'login' };

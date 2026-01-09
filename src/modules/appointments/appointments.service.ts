@@ -94,19 +94,19 @@ export class AppointmentsService {
     }
   }
 
-  // async getDoctorAvailability(doctorId: string, date?: string) {
-  //   try {
-  //     this.logger.log(`Fetching availability for doctor: ${doctorId}`);
-  //     const result = await firstValueFrom(
-  //       this.appointmentServiceClient.getDoctorAvailability(doctorId, date).pipe(timeout(5000)),
-  //     );
-  //     return result;
-  //   } catch (error) {
-  //     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-  //     this.logger.error(`Failed to fetch doctor availability: ${errorMessage}`);
-  //     throw new BadRequestException('Failed to fetch doctor availability.');
-  //   }
-  // }
+  async getDoctorAvailability(doctorId: string, date: string) {
+    try {
+      this.logger.log(`Fetching availability for doctor: ${doctorId}`);
+      const result = await firstValueFrom(
+        this.appointmentServiceClient.getDoctorAvailability(doctorId, date).pipe(timeout(5000)),
+      );
+      return result;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Failed to fetch doctor availability: ${errorMessage}`);
+      throw new BadRequestException('Failed to fetch doctor availability.');
+    }
+  }
 
   async getDoctorProfile(doctorId: string) {
     try {
@@ -150,7 +150,7 @@ export class AppointmentsService {
     }
   }
 
-  async getPatientAppointmentCounts(patientId: number){
+  async getPatientAppointmentCounts(patientId: number) {
     try {
       this.logger.log(`Fetching appointment counts for doctor: ${patientId}`);
       const result = await firstValueFrom(
