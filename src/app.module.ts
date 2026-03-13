@@ -5,6 +5,8 @@ import { HospitalModule } from './modules/hospitals/hospitals.module';
 import { DoctorSpecialiesModule } from './modules/doctor-specialty/doctor-specialies.module';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { NotificationModule } from './modules/notifications/notification.module';
+import { ChatModule } from './modules/chats/chat.module';
+import { CallModule } from './modules/calls/call.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { NotificationModule } from './modules/notifications/notification.module'
     HospitalModule,
     DoctorSpecialiesModule,
     AppointmentsModule,
-    NotificationModule
+    NotificationModule,
+    ChatModule,
+    CallModule
   ],
   controllers: [],
   providers: [],
