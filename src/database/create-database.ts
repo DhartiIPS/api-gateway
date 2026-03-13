@@ -15,7 +15,7 @@ async function createDatabases() {
 
   try {
     await adminClient.connect();
-    console.log('✅ Connected to PostgreSQL');
+    console.log(' Connected to PostgreSQL');
 
     // Create user_doctor database
     const userDbName = process.env.USER_DB_NAME || 'microservice_db';
@@ -26,9 +26,9 @@ async function createDatabases() {
 
     if (userDbExists.rows.length === 0) {
       await adminClient.query(`CREATE DATABASE "${userDbName}"`);
-      console.log(`✅ Created ${userDbName} database`);
+      console.log(` Created ${userDbName} database`);
     } else {
-      console.log(`✅ ${userDbName} database already exists`);
+      console.log(` ${userDbName} database already exists`);
     }
 
     // Create appointment_doctor database
@@ -40,13 +40,13 @@ async function createDatabases() {
 
     if (appointmentDbExists.rows.length === 0) {
       await adminClient.query(`CREATE DATABASE "${appointmentDbName}"`);
-      console.log(`✅ Created ${appointmentDbName} database`);
+      console.log(` Created ${appointmentDbName} database`);
     } else {
-      console.log(`✅ ${appointmentDbName} database already exists`);
+      console.log(` ${appointmentDbName} database already exists`);
     }
 
     await adminClient.end();
-    console.log('✅ Database creation completed');
+    console.log(' Database creation completed');
   } catch (error) {
     console.error('❌ Error creating databases:', error);
     await adminClient.end();

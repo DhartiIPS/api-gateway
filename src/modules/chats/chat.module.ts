@@ -10,7 +10,7 @@ import { ChatController } from './chat.controller';
         transport: Transport.TCP,
         options: {
           host: 'localhost',
-          port: 5009, 
+          port :4002, 
         },
       },
     ]),

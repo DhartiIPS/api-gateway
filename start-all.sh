@@ -19,7 +19,7 @@ if ! pg_isready -h localhost -p 5432 > /dev/null 2>&1; then
     echo "Please start PostgreSQL and try again"
     exit 1
 fi
-echo "${GREEN}✅ PostgreSQL is running${NC}"   
+echo "${GREEN} PostgreSQL is running${NC}"   
 echo ""
 
 # Start Auth Service
@@ -27,7 +27,7 @@ echo "${YELLOW}Starting Auth Service...${NC}"
 cd ../auth-service
 npm run start:dev &
 AUTH_PID=$!
-echo "${GREEN}✅ Auth Service started (PID: $AUTH_PID)${NC}"
+echo "${GREEN} Auth Service started (PID: $AUTH_PID)${NC}"
 sleep 3
 echo ""
 
@@ -36,7 +36,7 @@ echo "${YELLOW}Starting Appointment Service...${NC}"
 cd ../appointment-service
 npm run start:dev &
 APPOINTMENT_PID=$!
-echo "${GREEN}✅ Appointment Service started (PID: $APPOINTMENT_PID)${NC}"
+echo "${GREEN} Appointment Service started (PID: $APPOINTMENT_PID)${NC}"
 sleep 3
 echo ""
 
@@ -45,7 +45,7 @@ echo "${YELLOW}Starting BFF Gateway...${NC}"
 cd ../gateway
 npm run start:dev &
 GATEWAY_PID=$!
-echo "${GREEN}✅ BFF Gateway started (PID: $GATEWAY_PID)${NC}"
+echo "${GREEN} BFF Gateway started (PID: $GATEWAY_PID)${NC}"
 echo ""
 
 # Start Frontend
@@ -53,7 +53,7 @@ echo "${YELLOW}Starting Frontend...${NC}"
 cd ../frontend
 npm run dev &
 FRONTEND_PID=$!
-echo "${GREEN}✅ Frontend started (PID: $FRONTEND_PID)${NC}"
+echo "${GREEN} Frontend started (PID: $FRONTEND_PID)${NC}"
 echo ""
 
 echo "${GREEN}========================================${NC}"

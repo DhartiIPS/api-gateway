@@ -25,7 +25,7 @@ if not exist "..\frontend" (
     exit /b 1
 )
 
-echo ✅ All service directories found
+echo  All service directories found
 echo.
 
 REM Start Auth Service
@@ -63,6 +63,6 @@ echo   🔧 Auth Service:        TCP 127.0.0.1:5002
 echo   🔧 Appointment Service: TCP 127.0.0.1:5003
 echo   🗄️  PostgreSQL:          localhost:5432
 echo.
-echo ✅ Open a browser and navigate to http://localhost:3000
+echo  Open a browser and navigate to http://localhost:3000
 echo.
 pause
