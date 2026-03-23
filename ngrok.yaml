@@ -1,6 +1,6 @@
 # ngrok.yml  — run all services at once
 version: "2"
-authtoken: 2i5PB3v57tmvdXNrXhAGw5W2KQK_2wMve1Xu5U2CJGr63Bit7
+authtoken: rd_33Cp5JnEUnZvNHZ7kOd4Z5YHapF
 
 tunnels:
   gateway:
