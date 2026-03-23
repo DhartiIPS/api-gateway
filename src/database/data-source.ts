@@ -5,11 +5,12 @@ ConfigModule.forRoot();
 
 export default new DataSource({
   type: 'postgres',
-  host: process.env.USER_DB_HOST || 'localhost',
-  port: parseInt(process.env.USER_DB_PORT || '5432'),
-  username: process.env.USER_DB_USERNAME || 'postgres',
-  password: process.env.USER_DB_PASSWORD || 'ips12345',
-  database: process.env.USER_DB_NAME || 'microservice_db',
+  // host: process.env.USER_DB_HOST || 'localhost',
+  // port: parseInt(process.env.USER_DB_PORT || '5432'),
+  // username: process.env.USER_DB_USERNAME || 'postgres',
+  // password: process.env.USER_DB_PASSWORD || 'ips12345',
+  // database: process.env.USER_DB_NAME || 'microservice_db',
+  url: process.env.USER_URL,
   entities: ['src/**/*.entity{.ts,.js}'],
   migrations: ['src/database/migrations/*{.ts,.js}'],
   synchronize: false,
