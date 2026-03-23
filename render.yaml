@@ -1,0 +1,41 @@
+# ngrok.yml  — run all services at once
+version: "2"
+authtoken: 2i5PB3v57tmvdXNrXhAGw5W2KQK_2wMve1Xu5U2CJGr63Bit7
+
+tunnels:
+  gateway:
+    addr: 3001
+    proto: http
+    # This is your main public URL
+
+  auth:
+    addr: 5002
+    proto: http
+
+  appointments:
+    addr: 5000
+    proto: http
+
+  hospitals:
+    addr: 5003
+    proto: http
+
+  doctor-specialty:
+    addr: 5004
+    proto: http
+
+  notifications:
+    addr: 5000
+    proto: http
+
+  chats:
+    addr: 4002
+    proto: http
+
+  calls:
+    addr: 4009
+    proto: http
+
+  health:
+    addr: 5009
+    proto: http
