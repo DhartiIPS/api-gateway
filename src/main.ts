@@ -12,15 +12,14 @@ async function bootstrap() {
   origin: [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://frontend-snowy-six-67.vercel.app',
-    'https://elbert-readier-dallyingly.ngrok-free.dev',
-    /\.ngrok-free\.app$/,      // ← allows any ngrok URL
+    'https://frontend-eight-beryl-k9n74eselr.vercel.app', // ✅ FIXED
+    /\.ngrok-free\.app$/,
     /\.ngrok\.io$/,
   ],
   credentials: true,
-  methods: ['GET','HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
-});;
+});
 
   app.useGlobalPipes(
     new ValidationPipe({
