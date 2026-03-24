@@ -29,11 +29,11 @@ tunnels:
     proto: http
 
   chats:
-    addr: 4002
+    addr: 5009
     proto: http
 
   calls:
-    addr: 4009
+    addr: 5010
     proto: http
 
   health:
