@@ -13,11 +13,12 @@ async function bootstrap() {
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'https://frontend-snowy-six-67.vercel.app',
+    'https://elbert-readier-dallyingly.ngrok-free.dev',
     /\.ngrok-free\.app$/,      // ← allows any ngrok URL
     /\.ngrok\.io$/,
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  methods: ['GET','HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'],
 });;
 
